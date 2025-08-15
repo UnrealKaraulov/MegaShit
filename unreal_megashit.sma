@@ -226,14 +226,9 @@ public plugin_pause()
 				remove_task(id + SHIT_EVENT_TASK_OFFSET);
 			}
 		}
-		
-		if (task_exists(id + SHIT_EVENT_TASK_OFFSET))
+		else 
 		{
 			remove_task(id + SHIT_EVENT_TASK_OFFSET);
-		}
-		
-		if (task_exists(id + DEATH_EVENT_TASK_OFFSET))
-		{
 			remove_task(id + DEATH_EVENT_TASK_OFFSET);
 		}
 	}
@@ -241,15 +236,8 @@ public plugin_pause()
 
 public client_disconnected(id)
 {
-	if (task_exists(id + SHIT_EVENT_TASK_OFFSET))
-	{
-		remove_task(id + SHIT_EVENT_TASK_OFFSET);
-	}
-	
-	if (task_exists(id + DEATH_EVENT_TASK_OFFSET))
-	{
-		remove_task(id + DEATH_EVENT_TASK_OFFSET);
-	}
+	remove_task(id + SHIT_EVENT_TASK_OFFSET);
+	remove_task(id + DEATH_EVENT_TASK_OFFSET);
 }
 
 public RG_PM_Move_post(id)
