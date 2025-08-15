@@ -351,7 +351,7 @@ START_PLAYER_SHIT(shitent,id_target, bool:second_mdl)
 	static name1[MAX_NAME_LENGTH];
 	static name2[MAX_NAME_LENGTH];
 	
-	if (id_target >= 1 && id_target <= MAX_PLAYERS && !is_nullent(shitent) && (is_user_connected(id_target) || is_user_bot(id_target)))
+	if (id_target >= 1 && id_target <= MAX_PLAYERS && !is_nullent(shitent) && is_user_connected(id_target))
 	{
 		if(TeamName:get_member(id_target, m_iTeam) != TEAM_CT && TeamName:get_member(id_target, m_iTeam) != TEAM_TERRORIST) 
 		{
@@ -359,7 +359,7 @@ START_PLAYER_SHIT(shitent,id_target, bool:second_mdl)
 		}
 		
 		new id = get_entvar( shitent, var_owner ) 
-		if (id != id_target && id != 0 && (is_user_connected(id) || is_user_bot(id)))
+		if (id != id_target && id != 0 && is_user_connected(id))
 		{
 			new Float:health = get_entvar(shitent, var_health );
 			if (health > 0.0)
@@ -766,7 +766,7 @@ public INTO_SHIT(const shitent, const id_target)
 	if (g_bShitPluginActivated && !is_nullent(shitent) && id_target >= 1 && id_target <= MAX_PLAYERS && get_gametime() - g_fShitIntoTimeout[id_target] > 3.0)
 	{
 		new id = get_entvar( shitent, var_owner );
-		if (id != id_target && id != 0 && is_user_connected(id)/* || is_user_bot(id))*/ && is_user_connected(id_target)/* || is_user_bot(id_target))*/)
+		if (id != id_target && id != 0 && is_user_connected(id) && is_user_connected(id_target))
 		{
 			g_fShitIntoTimeout[id_target] = get_gametime();
 			static name1[MAX_NAME_LENGTH];
