@@ -1,4 +1,4 @@
-# MegaShit v3.2
+# MegaShit
 ### Плагин для AMX Mod X (CS 1.6)
 
 Если слов не достаточно:) 
