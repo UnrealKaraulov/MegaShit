@@ -6,7 +6,7 @@
 
 #define PLUGIN  "MegaShit"
 #define AUTHOR  "Karaulov"
-#define VERSION "3.2"
+#define VERSION "3.3"
 
 // Класс сущностей
 new const SHIT_MODEL_CLASSNAME[] = "megashit_model";
@@ -24,7 +24,7 @@ new SHIT_SPRITE1[64] = "sprites/megashit/megashit_muhi.spr"
 new SHIT_SPRITE2[64] = "sprites/megashit/megashit_flame.spr"
 
 new SHIT_SOUND_SHIT[64] = "megashit/megashit_pukpuk.wav"
-new SHIT_SOUND_NELZA[64] = "megashit/megashit_nelza.wav"
+new SHIT_SOUND_NO_SHIT[64] = "megashit/megashit_nelza.wav"
 new SHIT_SOUND_PLACE_IT_HERE[64] = "megashit/megashit_place.wav"
 new SHIT_SOUND_AMBIENT1[64] = "ambience/flies.wav"
 new SHIT_SOUND_AMBIENT2[64] = "ambience/burning1.wav"
@@ -189,7 +189,7 @@ public plugin_precache()
 	read_shit_cfg();
 	
 	precache_sound(SHIT_SOUND_SHIT);
-	precache_sound(SHIT_SOUND_NELZA);
+	precache_sound(SHIT_SOUND_NO_SHIT);
 	precache_sound(SHIT_SOUND_AMBIENT1);
 	precache_sound(SHIT_SOUND_AMBIENT2);
 	precache_sound(SHIT_EAT_SOUND);
@@ -326,7 +326,7 @@ public StartMakeShit(idx)
 			static name1[MAX_NAME_LENGTH];
 			get_user_name(id,name1,charsmax(name1));
 			
-			rh_emit_sound2(id, 0, CHAN_WEAPON , SHIT_SOUND_NELZA, 0.8, ATTN_STATIC);
+			rh_emit_sound2(id, 0, CHAN_WEAPON , SHIT_SOUND_NO_SHIT, 0.8, ATTN_STATIC);
 			rh_emit_sound2(id, 0, CHAN_BODY , SHIT_SOUND_SHIT, 0.8, ATTN_STATIC);
 			
 			static phrase[MAX_PHRASE_LEN];
@@ -745,7 +745,6 @@ public CBasePlayer_ObjectCaps_pre(iEnt)
 
 public PlawerKilled(id, iAttacker, iGib) 
 { 
-	new id = read_data(2);
 	get_entvar(id,var_origin,g_vDeadOrigins2[id]);
 	set_task(1.2,"get_real_origin_player",id + DEATH_EVENT_TASK_OFFSET);
 }
@@ -824,7 +823,7 @@ read_shit_cfg()
 	cfg_read_str("SHITCONFIG","SHIT_SPRITE1",SHIT_SPRITE1,SHIT_SPRITE1,charsmax(SHIT_SPRITE1));
 	cfg_read_str("SHITCONFIG","SHIT_SPRITE2",SHIT_SPRITE2,SHIT_SPRITE2,charsmax(SHIT_SPRITE2));
 	cfg_read_str("SHITCONFIG","SHIT_SOUND_SHIT",SHIT_SOUND_SHIT,SHIT_SOUND_SHIT,charsmax(SHIT_SOUND_SHIT));
-	cfg_read_str("SHITCONFIG","SHIT_SOUND_NELZA",SHIT_SOUND_NELZA,SHIT_SOUND_NELZA,charsmax(SHIT_SOUND_NELZA));
+	cfg_read_str("SHITCONFIG","SHIT_SOUND_NO_SHIT",SHIT_SOUND_NO_SHIT,SHIT_SOUND_NO_SHIT,charsmax(SHIT_SOUND_NO_SHIT));
 	cfg_read_str("SHITCONFIG","SHIT_SOUND_PLACE_IT_HERE",SHIT_SOUND_PLACE_IT_HERE,SHIT_SOUND_PLACE_IT_HERE,charsmax(SHIT_SOUND_PLACE_IT_HERE));
 	cfg_read_str("SHITCONFIG","SHIT_SOUND_AMBIENT1",SHIT_SOUND_AMBIENT1,SHIT_SOUND_AMBIENT1,charsmax(SHIT_SOUND_AMBIENT1));
 	cfg_read_str("SHITCONFIG","SHIT_SOUND_AMBIENT2",SHIT_SOUND_AMBIENT2,SHIT_SOUND_AMBIENT2,charsmax(SHIT_SOUND_AMBIENT2));
