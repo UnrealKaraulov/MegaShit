@@ -6,7 +6,7 @@
 
 #define PLUGIN  "MegaShit"
 #define AUTHOR  "Karaulov"
-#define VERSION "3.3"
+#define VERSION "3.4"
 
 // Класс сущностей
 new const SHIT_MODEL_CLASSNAME[] = "megashit_model";
@@ -15,6 +15,8 @@ new const SHIT_SPRITE_CLASSNAME[] = "megashit_sprite";
 // Магические числа :)
 new const DEATH_EVENT_TASK_OFFSET = 10000;
 new const SHIT_EVENT_TASK_OFFSET = 20000;
+
+#define MAX_PHRASE_LEN 256
 
 // Пути к моделям и звукам
 new SHIT_MODEL1[64] = "models/megashit/megashit_model.mdl"
@@ -52,10 +54,11 @@ new Float:START_SHIT_TIME = 1.0;
 new g_iEAT_HP_OWNER = 1;
 new g_iEAT_HP_OTHER = 5;
 new Float:g_fMAX_EAT_HP = 150.0;
+new Float:g_fStepWait = 5.0;
 
 // Состояния плагина
 new g_bShitPluginActivated = 1;
-new bool:g_bUNREAL_SHIT_ACTIVATED = false;
+new bool:g_bMEGASHIT_ACTIVE = false;
 new bool:g_bOneShitCompleted = false;
 new bool:g_bNeedRemoveShit = false
 
@@ -124,10 +127,9 @@ new const PHRASE_SECTIONS[PHRASE_ENUM_COUNT][] = {
 new Array:g_aPhrases[PHRASE_ENUM_COUNT];
 
 #define AddFlag(%1,%2)       ( %1 |= ( 1 << (%2-1) ) )
-#define RemoveFlag(%1,%2)    ( %1 &= ~( 1 << (%2-1) ) )
+//#define RemoveFlag(%1,%2)    ( %1 &= ~( 1 << (%2-1) ) )
 #define CheckFlag(%1,%2)     ( %1 & ( 1 << (%2-1) ) )
 
-#define MAX_PHRASE_LEN 256
 
 public plugin_init() 
 {
@@ -140,12 +142,12 @@ public plugin_init()
 	
 	create_cvar(PLUGIN, VERSION, (FCVAR_SERVER | FCVAR_SPONLY | FCVAR_UNLOGGED));
 	
-	set_task(START_SHIT_TIME,"ACTIVATE_UNREAL_SHIT");
+	set_task(START_SHIT_TIME,"MEGASHIT_ACTIVATE");
 }
 
-public ACTIVATE_UNREAL_SHIT()
+public MEGASHIT_ACTIVATE()
 {
-	g_bUNREAL_SHIT_ACTIVATED = true;
+	g_bMEGASHIT_ACTIVE = true;
 }
 
 public PlawerSpawn(const id)
@@ -252,7 +254,7 @@ public client_disconnected(id)
 
 public RG_PM_Move_post(id)
 {
-	if (!g_bUNREAL_SHIT_ACTIVATED)
+	if (!g_bMEGASHIT_ACTIVE)
 		return HC_CONTINUE;
 		
 	new buttons = get_entvar(id, var_button);
@@ -763,7 +765,7 @@ public EAT_SHIT(const iEntity, const iActivator, const iCaller, USE_TYPE:useType
 
 public INTO_SHIT(const shitent, const id_target)
 {
-	if (g_bShitPluginActivated && !is_nullent(shitent) && id_target >= 1 && id_target <= MAX_PLAYERS && get_gametime() - g_fShitIntoTimeout[id_target] > 3.0)
+	if (g_bShitPluginActivated && !is_nullent(shitent) && id_target >= 1 && id_target <= MAX_PLAYERS && get_gametime() - g_fShitIntoTimeout[id_target] > g_fStepWait)
 	{
 		new id = get_entvar( shitent, var_owner );
 		if (id != id_target && id != 0 && is_user_connected(id) && is_user_connected(id_target))
@@ -836,6 +838,8 @@ read_shit_cfg()
 	cfg_read_int("SHITCONFIG","EAT_OTHER_HP",g_iEAT_HP_OTHER,g_iEAT_HP_OTHER);
 	cfg_read_flt("SHITCONFIG","MAX_EAT_HP",g_fMAX_EAT_HP,g_fMAX_EAT_HP);
 	
+	cfg_read_flt("SHITCONFIG", "STEP_WAIT_TIME",g_fStepWait,g_fStepWait);
+	
 	// Вывод конфига
 	log_amx(" ");
 	log_amx("====== UnrealMegaShit Config Loaded ======");
@@ -865,7 +869,7 @@ read_shit_cfg()
 	log_amx("Loaded %d phrase categories with total %d phrases", sizeof(g_aPhrases), phrases_loaded);
 	
 	bind_pcvar_num(create_cvar("shit_active", "1",
-					.description = "Activate unreal shit"
+					.description = "Activate unreal mega shit"
 	),    g_bShitPluginActivated);
 	
 	UFLAGS_SHIT = strlen(FLAGS_SHIT) > 0 ? read_flags(FLAGS_SHIT) : 0;
