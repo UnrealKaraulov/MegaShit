@@ -31,3 +31,6 @@
 4. Скопировать содержимое папки `cstrike` на сервер
 5. Добавить в `plugins.ini`
 
+
+
+Так же возможно вам понадобится защита от ESP/WH https://github.com/UnrealKaraulov/UNREAL_ANTI_ESP
