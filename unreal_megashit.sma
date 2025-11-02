@@ -216,7 +216,7 @@ public plugin_end()
 
 public plugin_pause()
 {
-	for(new id = 1; id <= MAX_PLAYERS;id++)
+	for(new id = 1; id <= MaxClients;id++)
 	{
 		if (is_user_connected(id))
 		{
@@ -341,7 +341,7 @@ START_PLAYER_SHIT(shitent,id_target, bool:second_mdl)
 	static name1[MAX_NAME_LENGTH];
 	static name2[MAX_NAME_LENGTH];
 	
-	if (id_target >= 1 && id_target <= MAX_PLAYERS && !is_nullent(shitent) && is_user_connected(id_target))
+	if (id_target >= 1 && id_target <= MaxClients && !is_nullent(shitent) && is_user_connected(id_target))
 	{
 		if(TeamName:get_member(id_target, m_iTeam) != TEAM_CT && TeamName:get_member(id_target, m_iTeam) != TEAM_TERRORIST) 
 		{
@@ -613,7 +613,7 @@ GENERATE_UNREAL_SHIT( id, idxSprite, const szSprite[ ], idxModel, const szModel[
 
 START_SHIT_EATING(const iShitModelEntity, const iCaller)
 {
-	if(is_nullent(iShitModelEntity) || iCaller < 1 || iCaller > MAX_PLAYERS || !is_user_alive(iCaller)) 
+	if(is_nullent(iShitModelEntity) || iCaller < 1 || iCaller > MaxClients || !is_user_alive(iCaller)) 
 	{
 		return;
 	}
@@ -753,7 +753,7 @@ public EAT_SHIT(const iEntity, const iActivator, const iCaller, USE_TYPE:useType
 
 public INTO_SHIT(const shitent, const id_target)
 {
-	if (g_bShitPluginActivated && !is_nullent(shitent) && id_target >= 1 && id_target <= MAX_PLAYERS && get_gametime() - g_fShitIntoTimeout[id_target] > g_fStepWait)
+	if (g_bShitPluginActivated && !is_nullent(shitent) && id_target >= 1 && id_target <= MaxClients && get_gametime() - g_fShitIntoTimeout[id_target] > g_fStepWait)
 	{
 		new id = get_entvar( shitent, var_owner );
 		if (id != id_target && id != 0 && is_user_connected(id) && is_user_connected(id_target))
