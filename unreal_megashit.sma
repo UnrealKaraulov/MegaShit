@@ -6,7 +6,7 @@
 
 #define PLUGIN  "MegaShit"
 #define AUTHOR  "Karaulov"
-#define VERSION "3.4"
+#define VERSION "3.5"
 
 // Класс сущностей
 new const SHIT_MODEL_CLASSNAME[] = "megashit_model";
